@@ -10,7 +10,7 @@ async function connect() {
       useUnifiedTopology: true,
       family: 4
     });
-    console.log(`Conectado a la base de datos ${database}`);
+    console.log(`Conectado a la base de datos -> ${database}`);
   } catch (error) {
     console.log(error);
   }
