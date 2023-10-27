@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import Swal from "sweetalert2";
 import {LoginServiceService} from "../../../../service/login/login-service.service";
+import {User} from "../../../models/User";
 
 @Component({
   selector: 'app-login-user',
@@ -34,12 +35,17 @@ export class LoginUserComponent implements OnInit{
           })
         this.LoginService.loginUser(this.formLogin.value.username, this.formLogin.value.password)
           .subscribe((res: any) => {
-            console.log(res);
             if (res.null==null) {
+              const user:User = res;
               this.LoginService.username = this.formLogin.value.username;
               this.LoginService.password = this.formLogin.value.password;
-              localStorage.setItem("user", JSON.stringify(res));
-              this.router.navigate(['/home']);
+              localStorage.setItem("user", JSON.stringify(user));
+              let user2 = JSON.parse(localStorage.getItem("user") || '{}');
+              if(user2.rol==1){
+                this.router.navigate(['/home-admin']);
+              }else{
+                this.router.navigate(['/home']);
+              }
             } else {
               Swal.fire({
                 icon: 'error',

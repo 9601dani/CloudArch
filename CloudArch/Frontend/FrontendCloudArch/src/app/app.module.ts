@@ -8,13 +8,21 @@ import { HomeComponent } from './views/home/home/home.component';
 import { HomeAdminComponent } from './views/home/home-admin/home-admin.component';
 import {LoginServiceService} from "../service/login/login-service.service";
 import {HttpClientModule} from "@angular/common/http";
+import { MenuAdminComponent } from './views/menu/menu-admin/menu-admin.component';
+import { MenuComponent } from './views/menu/menu/menu.component';
+import { NewEmpleadoComponent } from './views/admin-options/new-empleado/new-empleado.component';
+import { ViewEmpleadosComponent } from './views/admin-options/view-empleados/view-empleados.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginUserComponent,
     HomeComponent,
-    HomeAdminComponent
+    HomeAdminComponent,
+    MenuAdminComponent,
+    MenuComponent,
+    NewEmpleadoComponent,
+    ViewEmpleadosComponent
   ],
   imports: [
     BrowserModule,

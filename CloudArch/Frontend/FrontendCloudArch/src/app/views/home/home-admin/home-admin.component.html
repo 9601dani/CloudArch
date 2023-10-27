@@ -1,1 +1,14 @@
-<p>home-admin works!</p>
+<app-menu-admin></app-menu-admin>
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col">
+      <div *ngIf="getOpcion()== 'crear-empleado' ">
+        <app-new-empleado></app-new-empleado>
+      </div>
+      <div *ngIf="getOpcion()== ''">
+        <app-view-empleados></app-view-empleados>
+      </div>
+
+    </div>
+  </div>
+</div>

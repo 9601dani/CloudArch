@@ -9,9 +9,13 @@ const addUser =async (req, res) => {
             rol: req.body.rol
         }
     );
-
     const result = await insertUser.save();
-    res.json(result);
+    //verificare si se inserto el usuario
+    if(result){
+        res.json({insert: 'yes'});
+    }else{
+        res.json({insert: 'not'});
+    }
 };
 
 const getAllUsers = async (req, res) => {
@@ -22,11 +26,16 @@ const getAllUsers = async (req, res) => {
 const updateUser = async (req, res) => {
     const update = await User.updateOne({username: req.body.username}, 
         {$set: {name: req.body.name,password: req.body.password,rol: req.body.rol}});
-    res.json(update);
+    if(update){    
+        res.json({update: 'yes'});
+    }else{
+        res.json({update: 'not'});
+    }
 };
 
 const deleteUser = async (req, res) => {
-    const remove = await User.deleteOne({username: req.body.username});
+    console.log(req.params.username)
+    const remove = await User.deleteOne({username: req.params.username});
     res.json(remove)
 };
 
@@ -39,6 +48,19 @@ const authUser= async (req, res) => {
         res.json({null: 'null'});
     }
 }
+const getOneUser= async (req, res) => {
+    const user = await User.findOne({username: req.body.username});
+    if(user){
+        res.json({find: 'yes'});
+    }else{
+        res.json({find: 'not'});
+    }
+}
+const getByUsername= async (req, res) => {
+    const user = await User.findOne({username: req.params.username});
+    console.log(user);
+    res.json(user);
+}
 
 
 module.exports = {
@@ -46,5 +68,7 @@ module.exports = {
     getAllUsers,
     updateUser,
     deleteUser,
-    authUser
+    authUser,
+    getOneUser,
+    getByUsername
 };
