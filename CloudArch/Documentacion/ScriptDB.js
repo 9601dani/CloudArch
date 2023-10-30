@@ -16,10 +16,10 @@ db.createCollection("carpeta");
 /*
     *Atributos
         -id
-        -name
-        -parent
-        -archivos[]
-        -user
+        -usuario
+        -path
+        -nombre
+        -fecha_creacion
 
  */
 db.createCollection("archivo");
@@ -28,7 +28,8 @@ db.createCollection("archivo");
         -id
         -name
         -type
-        -parent
+        -path
+        -fecha_creacion
         -content
 
 */

@@ -9,7 +9,10 @@
   <div class="container-fluid h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-md-9 col-lg-6 col-xl-5">
-        <!-- Contenido para la parte izquierda (opcional) -->
+        <div class="col-md-6">
+          <img src="./assets/img2.jpg"
+               alt="Imagen" width="550" height="350">
+        </div>
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form novalidate class="form-sigin" [formGroup]="formLogin" (ngSubmit)="userAuth()">

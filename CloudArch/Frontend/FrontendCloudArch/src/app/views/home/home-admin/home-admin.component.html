@@ -8,7 +8,9 @@
       <div *ngIf="getOpcion()== ''">
         <app-view-empleados></app-view-empleados>
       </div>
-
+      <div *ngIf="getOpcion()== 'ver-papelera'">
+        <app-papelera></app-papelera>
+      </div>
     </div>
   </div>
 </div>

@@ -1,1 +1,16 @@
-<p>home works!</p>
+<app-menu></app-menu>
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col">
+      <div *ngIf="getOpcion()== ''">
+        //aqui va el componente de inicio
+      </div>
+      <div *ngIf="getOpcion()== 'cambiar-pass' ">
+        <app-change-pass></app-change-pass>
+      </div>
+      <div *ngIf="getOpcion()== 'compartir-arch'">
+        //aqui va el componente de compartir archivos
+      </div>
+    </div>
+  </div>
+</div>

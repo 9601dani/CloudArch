@@ -1,0 +1,50 @@
+<div *ngIf="editar">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="text-center p-4">
+          <h2>Perfil Usuario: {{ this.user.username }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="p-4">
+          <h4>Puede cambiar su contraseña en el siguiente formulario:</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="editar" class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+  <form novalidate class="form-sigin" [formGroup]="formUpdatePass" (ngSubmit)="updatePass()">
+    <!-- User input -->
+    <label class="form-label" >Nombre</label>
+    <div class="form-outline mb-4">
+      <input type="text" formControlName="name"  class="form-control form-control-lg"
+             value='{{this.user.name}}' />
+    </div>
+    <label class="form-label" >Username</label>
+    <div class="form-outline mb-4">
+      <input type="text" formControlName="username"  class="form-control form-control-lg"
+             value='{{this.user.username}}' />
+    </div>
+    <label class="form-label" >Password</label>
+    <div class="form-outline mb-4">
+      <input type="text" formControlName="password"  class="form-control form-control-lg"
+             value='{{this.user.password}}' />
+    </div>
+    <label class="form-label" >Rol</label>
+    <div class="form-outline mb-4">
+      <select class="form-select" formControlName="rol" aria-label="Default select example">
+        <option value="1">Administrador</option>
+        <option value="2">Empleado</option>
+      </select>
+    </div>
+    <div class="text-center text-lg-start mt-4 pt-2">
+      <button  type="submit" class="btn btn-primary btn-lg">Actualizar</button>
+    </div>
+  </form>
+</div>
+
+
