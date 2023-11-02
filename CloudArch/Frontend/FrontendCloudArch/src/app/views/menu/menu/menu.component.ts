@@ -25,7 +25,9 @@ export class MenuComponent implements OnInit{
     }
 
     cerrarSesion(){
+      this.service.document='my-document'
       localStorage.removeItem("user");
+      localStorage.removeItem("path");
       this.router.navigate(['/']);
     }
 

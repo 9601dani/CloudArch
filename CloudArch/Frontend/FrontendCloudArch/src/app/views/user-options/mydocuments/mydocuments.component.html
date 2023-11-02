@@ -1,0 +1,30 @@
+<div class="mi-componente">
+  <div class="d-flex justify-content-lg-end">
+    <a *ngIf="regresar_boton" (click)="regresar()" class="bi bi-arrow-return-left btn" >Regresar</a>
+    <a class="bi bi-file-earmark-plus btn">Nuevo Archivo</a>
+    <a (click)="newDirectory()" class="bi bi-folder-plus btn">Nueva Carpeta</a>
+  </div>
+  <div class="content">
+    <h2 class="text-center">Directorios</h2>
+    <div *ngIf="this.carpetas.length==0">
+      <a class="bi bi-folder-x btn">No hay carpetas</a>
+    </div>
+  </div>
+    <div>
+      <ul class="horizontal-list">
+        <div *ngFor="let directorio of this.carpetas">
+        <li (click)="abrirCarpeta(directorio)" class="bi bi-folder-fill btn">{{directorio.name}}</li>
+        </div>
+      </ul>
+    </div>
+
+    <h2 class="text-center">Archivos</h2>
+    <div>
+      <ul class="horizontal-list">
+        <li class="bi bi-file-earmark btn">Archivo 1</li>
+        <li class="bi bi-file-earmark btn">Archivo 2</li>
+      </ul>
+    </div>
+  </div>
+
+<br>

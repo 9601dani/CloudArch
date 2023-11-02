@@ -1,0 +1,32 @@
+/* En un archivo CSS */
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+.mi-componente {
+  background-color: #f5f5f5; /* Color blanco hueso */
+  border: 2px solid #ccc; /* Borde de 2 píxeles de grosor y color gris claro */
+  box-shadow: 3px 3px 5px #888; /* Sombra con desplazamiento de 3px en horizontal y vertical, con un radio de 5px y color gris oscuro */
+  transform: rotateY(10deg); /* Rotación en el eje Y para un efecto 3D */
+  border: 1px solid #ccc; /* Borde opcional para el componente */
+
+}
+.content {
+  max-height: 100%; /* Esto permite que el contenido crezca hasta el tamaño fijo */
+  overflow-y: auto; /* Agrega la barra de desplazamiento vertical cuando el contenido excede el tamaño fijo */
+}
+
+
+.horizontal-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap; /* Evita el salto de línea en los elementos de la lista */
+}
+
+.horizontal-list li {
+  margin-right: 10px; /* Espacio entre elementos */
+  margin-bottom: 10px; /* Espacio entre filas */
+}
+
+

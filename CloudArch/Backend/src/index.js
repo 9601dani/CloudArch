@@ -1,6 +1,7 @@
 const express = require('express');
 const { connect } = require('./configs/database.configs');
 const UserRoutes = require('./routes/users.routes');
+const CarpetaRoutes = require('./routes/carpetas.routes');
 const cors = require('cors');
 
 
@@ -16,7 +17,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.use('/api',UserRoutes);
+app.use('/api',UserRoutes,CarpetaRoutes);
 
 
 //Inicio del servidor 

@@ -3,7 +3,7 @@
   <div class="row align-items-center">
     <div class="col">
       <div *ngIf="getOpcion()== ''">
-        //aqui va el componente de inicio
+        <app-inicio-user></app-inicio-user>
       </div>
       <div *ngIf="getOpcion()== 'cambiar-pass' ">
         <app-change-pass></app-change-pass>

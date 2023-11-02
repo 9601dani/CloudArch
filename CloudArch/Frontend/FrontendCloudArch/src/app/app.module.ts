@@ -14,6 +14,9 @@ import { NewEmpleadoComponent } from './views/admin-options/new-empleado/new-emp
 import { ViewEmpleadosComponent } from './views/admin-options/view-empleados/view-empleados.component';
 import { PapeleraComponent } from './views/admin-options/papelera/papelera.component';
 import { ChangePassComponent } from './views/user-options/change-pass/change-pass.component';
+import { InicioUserComponent } from './views/user-options/inicio-user/inicio-user.component';
+import { MydocumentsComponent } from './views/user-options/mydocuments/mydocuments.component';
+import { SharedComponent } from './views/user-options/shared/shared.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import { ChangePassComponent } from './views/user-options/change-pass/change-pas
     NewEmpleadoComponent,
     ViewEmpleadosComponent,
     PapeleraComponent,
-    ChangePassComponent
+    ChangePassComponent,
+    InicioUserComponent,
+    MydocumentsComponent,
+    SharedComponent
   ],
     imports: [
         BrowserModule,

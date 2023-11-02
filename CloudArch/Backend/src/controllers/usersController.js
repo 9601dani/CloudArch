@@ -24,7 +24,6 @@ const getAllUsers = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-    console.log(req.body);
     const update = await User.updateOne({username: req.body.username}, 
         {$set: {name: req.body.name,password: req.body.password,rol: req.body.rol}});
     if(update){    

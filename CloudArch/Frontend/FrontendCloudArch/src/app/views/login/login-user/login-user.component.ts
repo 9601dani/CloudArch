@@ -43,8 +43,10 @@ export class LoginUserComponent implements OnInit{
               let user2 = JSON.parse(localStorage.getItem("user") || '{}');
               if(user2.rol==1){
                 this.router.navigate(['/home-admin']);
+                localStorage.setItem("path", JSON.stringify('root'));
               }else{
                 this.router.navigate(['/home']);
+                localStorage.setItem("path", JSON.stringify('root'));
               }
             } else {
               Swal.fire({
