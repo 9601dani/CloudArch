@@ -10,7 +10,7 @@ const addCarpeta =async (req, res) => {
         }
     );
     const result = await insertCarpeta.save();
-    //verificare si se inserto el usuario
+    //verificare si se inserto la carpeta
     if(result){
         res.json({insert: 'yes'});
     }else{

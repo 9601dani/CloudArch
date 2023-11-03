@@ -17,6 +17,8 @@ import { ChangePassComponent } from './views/user-options/change-pass/change-pas
 import { InicioUserComponent } from './views/user-options/inicio-user/inicio-user.component';
 import { MydocumentsComponent } from './views/user-options/mydocuments/mydocuments.component';
 import { SharedComponent } from './views/user-options/shared/shared.component';
+import { EditorComponent } from './views/user-options/editor/editor.component';
+import {CodeEditorModule} from "@ngstack/code-editor";
 
 @NgModule({
   declarations: [
@@ -32,14 +34,16 @@ import { SharedComponent } from './views/user-options/shared/shared.component';
     ChangePassComponent,
     InicioUserComponent,
     MydocumentsComponent,
-    SharedComponent
+    SharedComponent,
+    EditorComponent
   ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         ReactiveFormsModule,
         HttpClientModule,
-        FormsModule
+        FormsModule,
+        CodeEditorModule.forRoot()
     ],
   providers: [LoginServiceService],
   bootstrap: [AppComponent]

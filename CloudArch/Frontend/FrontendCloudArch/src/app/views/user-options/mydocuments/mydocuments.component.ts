@@ -3,6 +3,7 @@ import {Carpeta} from "../../../models/Carpeta";
 import {UserService} from "../../../../service/user-options/user.service";
 import Swal from "sweetalert2";
 import {CarpetaSave} from "../../../models/CarpetaSave";
+import {Archivo} from "../../../models/Archivo";
 @Component({
   selector: 'app-mydocuments',
   templateUrl: './mydocuments.component.html',
@@ -10,6 +11,7 @@ import {CarpetaSave} from "../../../models/CarpetaSave";
 })
 export class MydocumentsComponent implements OnInit{
   carpetas:Array<Carpeta>=[];
+  archivos:Array<Archivo>=[];
   regresar_boton:boolean=false;
   constructor(
     private service: UserService
@@ -17,6 +19,12 @@ export class MydocumentsComponent implements OnInit{
 
     ngOnInit(): void {
      this.buscarCarpetas();
+      this.buscarArchivos();
+     if (JSON.parse(localStorage.getItem("path") || '{}')=="root"){
+       this.regresar_boton=false;
+      }else{
+        this.regresar_boton=true;
+     }
     }
 
     newDirectory(){
@@ -93,11 +101,6 @@ export class MydocumentsComponent implements OnInit{
            this.carpetas = res;
          }else{
            this.carpetas = [];
-           Swal.fire({
-             icon: 'error',
-             title: 'Oops...',
-             text: 'No hay carpetas en este directorio',
-           })
          }
        });
    }
@@ -105,6 +108,7 @@ export class MydocumentsComponent implements OnInit{
    abrirCarpeta(carpeta: Carpeta){
       localStorage.setItem("path", JSON.stringify(carpeta.path+"/"+carpeta.name));
       this.buscarCarpetas();
+      this.buscarArchivos();
       this.regresar_boton=true;
    }
 
@@ -127,7 +131,36 @@ export class MydocumentsComponent implements OnInit{
         this.regresar_boton=false;
       }
       this.buscarCarpetas();
+      this.buscarArchivos();
     }
    }
+
+   edit_new_file(){
+    this.service.document='edit-arch';
+   }
+
+   buscarArchivos(){
+    this.service.getFilesUser()
+      .subscribe((res: any) => {
+        if(res.length > 0){
+          this.archivos = res;
+        }else{
+          this.archivos = [];
+        }
+      },()=> {
+
+      },()=> {
+        this.service.document='my-document';
+        });
+   }
+  abrirArchivo(archivo: any) {
+    // Lógica para abrir el archivo
+    console.log('Abriendo archivo: ' + archivo.name);
+  }
+
+  eliminarArchivo(archivo: any) {
+    // Lógica para eliminar el archivo
+    console.log('Eliminando archivo: ' + archivo.name);
+  }
 
 }

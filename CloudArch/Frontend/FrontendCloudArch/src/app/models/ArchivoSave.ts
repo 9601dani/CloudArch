@@ -1,5 +1,4 @@
-export class Archivo{
-  public id: string;
+export class ArchivoSave{
   public name: string;
   public type: string;
   public path: string;
@@ -7,8 +6,7 @@ export class Archivo{
   public createdDate: string;
   public content: string;
 
-  constructor(id: string, name: string, type: string, path: string, user: string, createdDate: string, content: string) {
-    this.id = id;
+  constructor(name: string, type: string, path: string, user: string, createdDate: string, content: string) {
     this.name = name;
     this.type = type;
     this.path = path;

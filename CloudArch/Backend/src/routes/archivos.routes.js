@@ -1,0 +1,9 @@
+const express = require('express');
+const ArchivoController = require('../controllers/archivosController');
+const router = express.Router();
+
+router.post('/addFile', ArchivoController.addArchivo);
+router.get('/getAllFilesUser', ArchivoController.getAllArchivosUser);
+router.get('/getOneFile', ArchivoController.getOneFile);
+
+module.exports = router;

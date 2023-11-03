@@ -4,6 +4,8 @@ import {User} from "../../app/models/User";
 import {UserSave} from "../../app/models/UserSave";
 import {Carpeta} from "../../app/models/Carpeta";
 import {CarpetaSave} from "../../app/models/CarpetaSave";
+import {Archivo} from "../../app/models/Archivo";
+import {ArchivoSave} from "../../app/models/ArchivoSave";
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +34,22 @@ export class UserService {
 
   public saveDirectory(carpeta: CarpetaSave){
     return this.httpClient.post(this.URL_API+'/addDirectory', carpeta);
+  }
+
+  /*---------------------------------------------------------FILES---------------------------------------------------------*/
+  public getFilesUser(){
+    let username = JSON.parse(localStorage.getItem("user") || '{}').username;
+    let path = JSON.parse(localStorage.getItem("path") || '{}');
+    return this.httpClient.get<Array<Archivo>>(this.URL_API+'/getAllFilesUser?username='+username+'&path='+path);
+  }
+
+  public saveFile(file: ArchivoSave){
+    return this.httpClient.post(this.URL_API+'/addFile', file);
+  }
+
+  public getOneFile(name:string){
+    let username = JSON.parse(localStorage.getItem("user") || '{}').username;
+    let path = JSON.parse(localStorage.getItem("path") || '{}');
+    return this.httpClient.get<Archivo>(this.URL_API+'/getOneFile?username='+username+'&path='+path+'&name='+name);
   }
 }

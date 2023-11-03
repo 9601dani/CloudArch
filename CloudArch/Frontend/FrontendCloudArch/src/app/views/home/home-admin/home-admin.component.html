@@ -5,6 +5,9 @@
       <div *ngIf="getOpcion()== 'crear-empleado' ">
         <app-new-empleado></app-new-empleado>
       </div>
+      <div *ngIf="getOpcion()== 'my-docs'">
+        <app-mydocuments></app-mydocuments>
+      </div>
       <div *ngIf="getOpcion()== ''">
         <app-view-empleados></app-view-empleados>
       </div>
