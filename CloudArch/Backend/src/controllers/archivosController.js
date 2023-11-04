@@ -39,8 +39,29 @@ const getOneFile = async (req, res) => {
     }
 }
 
+const updateFile = async (req, res) => {
+    const update = await Archivo.updateOne({user: req.body.user, path: req.body.path, name: req.body.name},
+        {$set: {content: req.body.content}});
+    if(update){
+        res.json({update: 'yes'});
+    }else{
+        res.json({update: 'not'});
+    }
+}
+
+const deleteFile = async (req, res) => {
+    const remove = await Archivo.deleteOne({user: req.query.user, path: req.query.path, name: req.query.name});
+    if(remove){
+        res.json({remove: 'yes'});
+    }else{
+        res.json({remove: 'not'});
+    }
+}
+
 module.exports = {
     addArchivo,
     getAllArchivosUser,
-    getOneFile
+    getOneFile,
+    updateFile,
+    deleteFile
 };

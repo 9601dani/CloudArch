@@ -13,7 +13,7 @@
     <div>
       <ul class="horizontal-list">
         <div *ngFor="let directorio of this.carpetas">
-        <li (click)="abrirCarpeta(directorio)" class="bi bi-folder-fill btn">{{directorio.name}}</li>
+        <li (click)="clickCarpeta(directorio)" class="bi bi-folder-fill btn">{{directorio.name}}</li>
         </div>
       </ul>
     </div>
@@ -25,7 +25,7 @@
       <div>
         <ul class="horizontal-list">
           <div *ngFor="let archivo of this.archivos">
-            <li class="bi bi-file-earmark btn">{{archivo.name}}</li>
+            <li (click)="clickArchivo(archivo)" class="bi bi-file-earmark btn">{{archivo.name}}</li>
           </div>
         </ul>
       </div>

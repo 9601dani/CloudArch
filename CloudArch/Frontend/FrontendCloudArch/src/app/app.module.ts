@@ -19,7 +19,6 @@ import { MydocumentsComponent } from './views/user-options/mydocuments/mydocumen
 import { SharedComponent } from './views/user-options/shared/shared.component';
 import { EditorComponent } from './views/user-options/editor/editor.component';
 import {CodeEditorModule} from "@ngstack/code-editor";
-
 @NgModule({
   declarations: [
     AppComponent,

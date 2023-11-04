@@ -4,6 +4,7 @@ import {UserService} from "../../../../service/user-options/user.service";
 import Swal from "sweetalert2";
 import {CarpetaSave} from "../../../models/CarpetaSave";
 import {Archivo} from "../../../models/Archivo";
+import {ArchivoSave} from "../../../models/ArchivoSave";
 @Component({
   selector: 'app-mydocuments',
   templateUrl: './mydocuments.component.html',
@@ -105,12 +106,32 @@ export class MydocumentsComponent implements OnInit{
        });
    }
 
+   clickCarpeta(carpeta: Carpeta){
+    Swal.fire({
+      title: 'Seleccione opcion a realizar',
+      input: 'select',
+      inputOptions: {
+        abrir: 'Abrir',
+        delete: 'Eliminar',
+      }
+    }).then((result) => {
+      if(result.value=='abrir'){
+        this.abrirCarpeta(carpeta);
+      }else if(result.value=='delete'){
+        this.eliminarCarpeta(carpeta);
+      }
+    });
+   }
+
    abrirCarpeta(carpeta: Carpeta){
       localStorage.setItem("path", JSON.stringify(carpeta.path+"/"+carpeta.name));
       this.buscarCarpetas();
       this.buscarArchivos();
       this.regresar_boton=true;
    }
+  eliminarCarpeta(carpeta: Carpeta){
+  alert('Eliminando carpeta: ' + carpeta.name);
+  }
 
    regresar(){
     if(JSON.parse(localStorage.getItem("path") || '{}')=="root"){
@@ -137,6 +158,8 @@ export class MydocumentsComponent implements OnInit{
 
    edit_new_file(){
     this.service.document='edit-arch';
+    this.service.contenido='';
+    this.service.name_doc='';
    }
 
    buscarArchivos(){
@@ -153,14 +176,75 @@ export class MydocumentsComponent implements OnInit{
         this.service.document='my-document';
         });
    }
+  clickArchivo(archivo: any) {
+    Swal.fire({
+      title: 'Seleccione opcion a realizar',
+      input: 'select',
+      inputOptions: {
+        abrir: 'Abrir',
+        delete: 'Eliminar',
+        compartir: 'Compartir',
+        cancelar: 'Cancelar'
+      }
+      }).then((result) => {
+      if(result.value=='abrir'){
+        this.abrirArchivo(archivo);
+      }else if(result.value=='delete'){
+        this.eliminarArchivo(archivo);
+      }else if(result.value=='compartir'){
+       this.compartirArchivo(archivo);
+      }
+    })
+  }
+
   abrirArchivo(archivo: any) {
     // Lógica para abrir el archivo
-    console.log('Abriendo archivo: ' + archivo.name);
+    this.service.document='edit-arch';
+    this.service.contenido=archivo.content;
+    this.service.name_doc=archivo.name;
   }
 
   eliminarArchivo(archivo: any) {
-    // Lógica para eliminar el archivo
-    console.log('Eliminando archivo: ' + archivo.name);
+      Swal.fire({
+        title: '¿Está seguro de eliminar el archivo?',
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Confirmar',
+      }).then((result) => {
+        if(result.isConfirmed){
+          this.service.deleteFile(new ArchivoSave(archivo.name, archivo.type, archivo.path, archivo.user, archivo.createdDate, archivo.content))
+            .subscribe((res: any) => {
+              if(res.remove=="yes"){
+                Swal.fire(
+                  'Eliminado',
+                  'Se eliminó el archivo',
+                  'success'
+                ).then((result) => {
+                  this.buscarArchivos();
+                });
+              }else{
+                Swal.fire(
+                  'Error',
+                  'No se eliminó el archivo',
+                  'error'
+                )
+              }
+            });
+        }else if(result.dismiss){
+          Swal.fire(
+            'Cancelado',
+            'No se eliminó el archivo',
+            'error'
+          )
+        }
+      });
+
+  }
+
+  compartirArchivo(archivo: any) {
+    // Lógica para compartir el archivo
+    alert('Compartiendo archivo: ' + archivo.name);
   }
 
 }

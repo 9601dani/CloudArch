@@ -35,7 +35,8 @@ export class EditorComponent implements OnInit{
     private service: UserService
   ) {}
   ngOnInit(): void {
-
+    this.codeModel.value= this.service.contenido
+    this.name_doc= this.service.name_doc
   }
   onCompile(){
     const parser = this.codeModel.value;
@@ -57,49 +58,54 @@ export class EditorComponent implements OnInit{
   }
 
   saveFile(){
-    Swal.fire({
-      title: 'Digite el nombre del archivo',
-      input: 'text',
-      icon: 'question',
-      showCancelButton: true,
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Confirmar',
-    }).then((result) => {
-      if(result.dismiss){
-        Swal.fire(
-          'Cancelado',
-          'No se guardo el archivo',
-          'error'
-        )
-      }else if(result.isConfirmed) {
-        //Verifico primero que no haya un archivo igual ya
-        let verif = false;
-        Swal.fire({
-          title: 'Seleccione el tipo de archivo',
-          input: 'select',
-          inputOptions: {
-            html: 'Html',
-            text: 'Texto',
-          }
-        }).then((result2) => {
-          this.service.getOneFile(result.value+'.'+result2.value)
-            .subscribe((res: any) => {
-              if(res){
-                verif = true;
-                Swal.fire(
-                  'Error',
-                  'Ya existe un archivo con ese nombre, en el directorio actual',
-                  'error'
-                )
-              }else{
-                this.name_doc=result.value;
-                this.type_doc=result2.value;
-                this.saveFile2();
-              }
-            });
-        });
-      }
-    })
+    if(this.name_doc==''){
+
+      Swal.fire({
+        title: 'Digite el nombre del archivo',
+        input: 'text',
+        icon: 'question',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Confirmar',
+      }).then((result) => {
+        if(result.dismiss){
+          Swal.fire(
+            'Cancelado',
+            'No se guardo el archivo',
+            'error'
+          )
+        }else if(result.isConfirmed) {
+          //Verifico primero que no haya un archivo igual ya
+          let verif = false;
+          Swal.fire({
+            title: 'Seleccione el tipo de archivo',
+            input: 'select',
+            inputOptions: {
+              html: 'Html',
+              text: 'Texto',
+            }
+          }).then((result2) => {
+            this.service.getOneFile(result.value+'.'+result2.value)
+              .subscribe((res: any) => {
+                if(res){
+                  verif = true;
+                  Swal.fire(
+                    'Error',
+                    'Ya existe un archivo con ese nombre, en el directorio actual',
+                    'error'
+                  )
+                }else{
+                  this.name_doc=result.value;
+                  this.type_doc=result2.value;
+                  this.saveFile2();
+                }
+              });
+          });
+        }
+      })
+    }else{
+      this.updateFile();
+    }
   }
   saveFile2(){
         const today = new Date();
@@ -138,5 +144,27 @@ export class EditorComponent implements OnInit{
 
       salir(){
         this.service.document='my-document';
+      }
+
+      updateFile(){
+        this.service.updateFile(new ArchivoSave(this.name_doc,this.type_doc, JSON.parse(localStorage.getItem("path") || '{}'),
+          JSON.parse(localStorage.getItem("user") || '{}').username,'',this.codigo))
+          .subscribe((res: any) => {
+            if(res.update=="yes"){
+              Swal.fire(
+                'Actualizado',
+                'Se actualizó el archivo',
+                'success'
+              ).then((result) => {
+                this.service.document='my-document';
+              });
+            }else{
+              Swal.fire(
+                'Error',
+                'No se actualizó el archivo',
+                'error'
+              )
+            }
+          });
       }
 }
