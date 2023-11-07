@@ -40,8 +40,8 @@ const getOneFile = async (req, res) => {
 }
 
 const updateFile = async (req, res) => {
-    const update = await Archivo.updateOne({user: req.body.user, path: req.body.path, name: req.body.name},
-        {$set: {content: req.body.content}});
+    const update = await Archivo.updateOne({user: req.body.user, path: req.body.path, name: req.query.name},
+        {$set: {content: req.body.content, name:req.body.name}});
     if(update){
         res.json({update: 'yes'});
     }else{

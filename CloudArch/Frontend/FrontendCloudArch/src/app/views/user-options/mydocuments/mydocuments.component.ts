@@ -5,6 +5,8 @@ import Swal from "sweetalert2";
 import {CarpetaSave} from "../../../models/CarpetaSave";
 import {Archivo} from "../../../models/Archivo";
 import {ArchivoSave} from "../../../models/ArchivoSave";
+import {AdminService} from "../../../../service/admin-options/admin.service";
+import {PapeleraSave} from "../../../models/PapeleraSave";
 @Component({
   selector: 'app-mydocuments',
   templateUrl: './mydocuments.component.html',
@@ -15,7 +17,8 @@ export class MydocumentsComponent implements OnInit{
   archivos:Array<Archivo>=[];
   regresar_boton:boolean=false;
   constructor(
-    private service: UserService
+    private service: UserService,
+    private serviceForPapelera: AdminService
     ) {}
 
     ngOnInit(): void {
@@ -184,6 +187,7 @@ export class MydocumentsComponent implements OnInit{
         abrir: 'Abrir',
         delete: 'Eliminar',
         compartir: 'Compartir',
+        copiar: 'Hacer Copia',
         cancelar: 'Cancelar'
       }
       }).then((result) => {
@@ -193,6 +197,8 @@ export class MydocumentsComponent implements OnInit{
         this.eliminarArchivo(archivo);
       }else if(result.value=='compartir'){
        this.compartirArchivo(archivo);
+      }else if(result.value=='copiar') {
+        this.hacerCopia(archivo.name);
       }
     })
   }
@@ -213,6 +219,7 @@ export class MydocumentsComponent implements OnInit{
         confirmButtonText: 'Confirmar',
       }).then((result) => {
         if(result.isConfirmed){
+          this.añadirAPapelera(archivo.name);
           this.service.deleteFile(new ArchivoSave(archivo.name, archivo.type, archivo.path, archivo.user, archivo.createdDate, archivo.content))
             .subscribe((res: any) => {
               if(res.remove=="yes"){
@@ -245,6 +252,61 @@ export class MydocumentsComponent implements OnInit{
   compartirArchivo(archivo: any) {
     // Lógica para compartir el archivo
     alert('Compartiendo archivo: ' + archivo.name);
+  }
+
+  añadirAPapelera(name:string){
+    this.service.getOneFile(name)
+      .subscribe((res:Archivo)=> {
+        if(res!=null){
+          this.serviceForPapelera.addToPapelera(new PapeleraSave(res.name, res.type, 'papelera', res.user, res.content, 'archivo'))
+            .subscribe((res:any)=> {
+              if(res.insert=="yes"){
+              }else{
+              }
+            });
+        }
+      });
+  }
+  hacerCopia(name:string){
+    let verif = false;
+    this.archivos.forEach((archivo)=>{
+      if(archivo.name == 'copia'+name){
+        verif = true;
+      }
+
+    });
+    if(verif){
+      Swal.fire(
+        'Error',
+        'Ya existe una copia con ese nombre, en el directorio actual',
+        'error'
+      )
+      return;
+    }else{
+      this.service.getOneFile(name)
+        .subscribe((res:Archivo)=> {
+          if(res!=null){
+            this.service.saveFile(new ArchivoSave('copia'+res.name, res.type, res.path, res.user, res.createdDate, res.content))
+              .subscribe((res:any)=> {
+                if(res.insert=="yes"){
+                  Swal.fire(
+                    'Creado',
+                    'Se creó la copia',
+                    'success'
+                  ).then((result) => {
+                    this.buscarArchivos();
+                  });
+                }else{
+                  Swal.fire(
+                    'Error',
+                    'No se creó la copia',
+                    'error'
+                  )
+                }
+              });
+          }
+        });
+    }
   }
 
 }

@@ -3,6 +3,8 @@ import {HttpClient} from "@angular/common/http";
 import {User} from "../../app/models/User";
 import {Observable} from "rxjs";
 import {UserSave} from "../../app/models/UserSave";
+import {PapeleraSave} from "../../app/models/PapeleraSave";
+import {Papelera} from "../../app/models/Papelera";
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +39,15 @@ export class AdminService {
 
   public updateUser(user: UserSave){
     return this.httpClient.put(this.URL_API+'/updateUser', user);
+  }
+
+  /*-------------------------------------------------PAPELERA-------------------------------------*/
+
+  public addToPapelera(papelera:PapeleraSave){
+    return this.httpClient.post(this.URL_API+'/addPapelera', papelera);
+  }
+
+  public getAllPapelera(){
+    return this.httpClient.get<Array<Papelera>>(this.URL_API+'/getAllPapelera?path=papelera');
   }
 }

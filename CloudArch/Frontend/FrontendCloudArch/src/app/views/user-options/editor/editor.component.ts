@@ -16,12 +16,13 @@ export class EditorComponent implements OnInit{
   linea!:number;
   name_doc:string='';
   type_doc:string='';
+  editar:boolean=true;
   theme = 'vs-dark';
   result = '';
   codeModel: CodeModel ={
     language: 'html',
     uri: 'main.html',
-    value: ''
+    value: '',
   };
 
   options = {
@@ -29,7 +30,8 @@ export class EditorComponent implements OnInit{
     minimap: {
       enabled: true
     },
-    fontsize: 20
+    fontsize: 20,
+    disabled: false,
   };
   constructor(
     private service: UserService
@@ -37,6 +39,10 @@ export class EditorComponent implements OnInit{
   ngOnInit(): void {
     this.codeModel.value= this.service.contenido
     this.name_doc= this.service.name_doc
+    this.editar= this.service.editar
+    if(!this.editar){
+      this.options.disabled=true;
+    }
   }
   onCompile(){
     const parser = this.codeModel.value;
@@ -147,8 +153,15 @@ export class EditorComponent implements OnInit{
       }
 
       updateFile(){
-        this.service.updateFile(new ArchivoSave(this.name_doc,this.type_doc, JSON.parse(localStorage.getItem("path") || '{}'),
-          JSON.parse(localStorage.getItem("user") || '{}').username,'',this.codigo))
+      let new_name = this.obtenerNameSinExtension();
+      Swal.fire({
+        title: 'Cambie el nombre si desea',
+        input: 'text',
+        inputValue: new_name,
+        icon: 'question',
+      }).then((result) => {
+        this.service.updateFile(new ArchivoSave(result.value+'.'+this.obtenerExtension() ,this.type_doc, JSON.parse(localStorage.getItem("path") || '{}'),
+          JSON.parse(localStorage.getItem("user") || '{}').username,'',this.codigo), this.name_doc)
           .subscribe((res: any) => {
             if(res.update=="yes"){
               Swal.fire(
@@ -166,5 +179,16 @@ export class EditorComponent implements OnInit{
               )
             }
           });
+      });
+      }
+
+      obtenerNameSinExtension(){
+        let name = this.name_doc.split('.');
+        return name[0];
+      }
+
+      obtenerExtension(){
+        let name = this.name_doc.split('.');
+        return name[1];
       }
 }

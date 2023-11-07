@@ -19,6 +19,7 @@ export class UserService {
   document: string='my-document';
   contenido: string='';
   name_doc: string='';
+  editar: boolean=true;
   /*---------------------------------------------------------USUARIO---------------------------------------------------------*/
   public getByUsername(username: string){
     return this.httpClient.get<User>(this.URL_API+'/getByUsername/'+username);
@@ -55,8 +56,8 @@ export class UserService {
     return this.httpClient.get<Archivo>(this.URL_API+'/getOneFile?username='+username+'&path='+path+'&name='+name);
   }
 
-  public updateFile(file: ArchivoSave){
-    return this.httpClient.put(this.URL_API+'/updateFile', file);
+  public updateFile(file: ArchivoSave, name:string){
+    return this.httpClient.put(this.URL_API+'/updateFile?name='+name, file);
   }
 
   public deleteFile(file: ArchivoSave){
