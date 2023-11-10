@@ -7,6 +7,7 @@ import {Archivo} from "../../../models/Archivo";
 import {ArchivoSave} from "../../../models/ArchivoSave";
 import {AdminService} from "../../../../service/admin-options/admin.service";
 import {PapeleraSave} from "../../../models/PapeleraSave";
+import {SharedSave} from "../../../models/SharedSave";
 @Component({
   selector: 'app-mydocuments',
   templateUrl: './mydocuments.component.html',
@@ -16,6 +17,7 @@ export class MydocumentsComponent implements OnInit{
   carpetas:Array<Carpeta>=[];
   archivos:Array<Archivo>=[];
   regresar_boton:boolean=false;
+  editorAdmin:boolean=false;
   constructor(
     private service: UserService,
     private serviceForPapelera: AdminService
@@ -160,9 +162,9 @@ export class MydocumentsComponent implements OnInit{
    }
 
    edit_new_file(){
-    this.service.document='edit-arch';
-    this.service.contenido='';
-    this.service.name_doc='';
+      this.service.document='edit-arch';
+      this.service.contenido='';
+      this.service.name_doc='';
    }
 
    buscarArchivos(){
@@ -251,7 +253,62 @@ export class MydocumentsComponent implements OnInit{
 
   compartirArchivo(archivo: any) {
     // Lógica para compartir el archivo
-    alert('Compartiendo archivo: ' + archivo.name);
+    Swal.fire({
+      title: 'Digite el nombre del usuario con el que desea compartir',
+      input: 'text',
+      icon: 'question',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Confirmar',
+    }).then((result) => {
+      if (result.dismiss){
+        Swal.fire(
+          'Cancelado',
+          'No se compartió el archivo',
+          'error'
+        )
+      }else{
+        //verificare que exista el usuario al que se la va a compartir
+        this.service.getByUsername(result.value)
+          .subscribe((res: any) => {
+            if(res){
+              //hare lo de la fecha actual para mandar el string
+              const today = new Date();
+              const year = today.getFullYear();
+              const month = (today.getMonth() + 1).toString().padStart(2, '0');
+              const day = today.getDate().toString().padStart(2, '0');
+              let fechaActual = `${year}-${month}-${day}`;
+              //ahora añadite la hora en formato string
+              const hour = today.getHours().toString().padStart(2, '0');
+              const minute = today.getMinutes().toString().padStart(2, '0');
+              const second = today.getSeconds().toString().padStart(2, '0');
+              let horaActual = `${hour}:${minute}:${second}`;
+              this.service.addShared(new SharedSave(archivo.name, archivo.type, 'shared', result.value, archivo.content, fechaActual, horaActual, archivo.user))
+                .subscribe((res: any) => {
+                  if(res.insert=="yes"){
+                    Swal.fire(
+                      'Compartido',
+                      'Se compartió el archivo a '+ result.value ,
+                      'success'
+                    )
+                  }else{
+                    Swal.fire(
+                      'Error',
+                      'No se compartió el archivo',
+                      'error'
+                    )
+                  }
+                });
+            }else{
+              Swal.fire(
+                'Error',
+                'No existe el usuario al que desea compartir',
+                'error'
+              )
+            }
+          });
+      }
+    })
   }
 
   añadirAPapelera(name:string){

@@ -57,8 +57,11 @@ const getOneUser= async (req, res) => {
 }
 const getByUsername= async (req, res) => {
     const user = await User.findOne({username: req.params.username});
-    console.log(user);
-    res.json(user);
+    if(user){
+        res.json(user);
+    }else{
+        res.json({find: 'not'});
+    }
 }
 
 

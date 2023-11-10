@@ -6,6 +6,7 @@ import {Carpeta} from "../../app/models/Carpeta";
 import {CarpetaSave} from "../../app/models/CarpetaSave";
 import {Archivo} from "../../app/models/Archivo";
 import {ArchivoSave} from "../../app/models/ArchivoSave";
+import {SharedSave} from "../../app/models/SharedSave";
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class UserService {
   contenido: string='';
   name_doc: string='';
   editar: boolean=true;
+  view_shared: boolean=false;
   /*---------------------------------------------------------USUARIO---------------------------------------------------------*/
   public getByUsername(username: string){
     return this.httpClient.get<User>(this.URL_API+'/getByUsername/'+username);
@@ -63,4 +65,19 @@ export class UserService {
   public deleteFile(file: ArchivoSave){
     return this.httpClient.delete(this.URL_API+'/deleteFile?user='+file.user+'&path='+file.path+'&name='+file.name);
   }
+  /*---------------------------------------------------------SHARED---------------------------------------------------------*/
+  public getSharedByUser(){
+    let username = JSON.parse(localStorage.getItem("user") || '{}').username;
+    return this.httpClient.get<Array<Archivo>>(this.URL_API+'/getAllSharedByUser?user='+username);
+  }
+  public addShared(file: SharedSave){
+    return this.httpClient.post(this.URL_API+'/addShared', file);
+  }
+
+  public deleteShared(file: SharedSave){
+    return this.httpClient.delete(this.URL_API+'/deleteShared?user='+file.user_shared+'&path='+file.path+'&name='+file.name);
+  }
+
+
+
 }

@@ -4,6 +4,7 @@ const UserRoutes = require('./routes/users.routes');
 const CarpetaRoutes = require('./routes/carpetas.routes');
 const ArchivosRoutes = require('./routes/archivos.routes');
 const PapeleraRoutes = require('./routes/papelera.routes');
+const SharedRoutes = require('./routes/shared.routes');
 const cors = require('cors');
 
 
@@ -19,7 +20,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.use('/api',UserRoutes,CarpetaRoutes,ArchivosRoutes, PapeleraRoutes);
+app.use('/api',UserRoutes,CarpetaRoutes,ArchivosRoutes, PapeleraRoutes, SharedRoutes);
 
 
 //Inicio del servidor 
