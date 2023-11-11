@@ -31,6 +31,7 @@ export class UserService {
 
   public updateUser(user: UserSave){
     return this.httpClient.put(this.URL_API+'/updateUser', user);
+
   }
 /*---------------------------------------------------------DIRECTIORIOS---------------------------------------------------------*/
   public getDirectory(){
@@ -46,10 +47,18 @@ export class UserService {
   updatePathDirectory(carpeta: CarpetaSave){
     let username = JSON.parse(localStorage.getItem("user") || '{}').username;
     let path = JSON.parse(localStorage.getItem("path") || '{}');
-    let new_path_directory = path+'/'+carpeta.name;
+    let new_path_directory = path;
     let carpeta_move= JSON.parse(localStorage.getItem("carpeta_mov") || '{}');
     return this.httpClient.put(this.URL_API+'/updatePathDirectory?username='+username+'&pathn='+new_path_directory, carpeta);
   }
+
+  public copyDirectory(carpeta: CarpetaSave){
+    let username = JSON.parse(localStorage.getItem("user") || '{}').username;
+    let path = JSON.parse(localStorage.getItem("path") || '{}');
+    let new_path_directory = path;
+    return this.httpClient.post(this.URL_API+'/copyDirectory?username='+username+'&pathn='+new_path_directory, carpeta);
+  }
+
   /*---------------------------------------------------------FILES---------------------------------------------------------*/
   public getFilesUser(){
     let username = JSON.parse(localStorage.getItem("user") || '{}').username;

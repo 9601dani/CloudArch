@@ -117,6 +117,8 @@ export class MydocumentsComponent implements OnInit{
       input: 'select',
       inputOptions: {
         abrir: 'Abrir',
+        mover: 'Mover',
+        copiar: 'Hacer Copia',
         delete: 'Eliminar',
       }
     }).then((result) => {
@@ -126,8 +128,31 @@ export class MydocumentsComponent implements OnInit{
         this.eliminarCarpeta(carpeta);
       }else if(result.value=='mover'){
         this.moveDirectory(carpeta);
+      }else if(result.value=='copiar'){
+        this.copiarCarpeta(carpeta)
       }
     });
+   }
+
+   copiarCarpeta(carpeta: Carpeta){
+    this.service.copyDirectory(carpeta)
+      .subscribe((res:any)=>{
+        if(res.copy=='yes') {
+          Swal.fire(
+            'Copiado',
+            'Se copió la carpeta',
+            'success'
+          ).then((result) => {
+            this.buscarCarpetas();
+          });
+        }else{
+          Swal.fire(
+            'Error',
+            'No se copió la carpeta',
+            'error'
+          )
+        }
+      })
    }
 
    abrirCarpeta(carpeta: Carpeta){
