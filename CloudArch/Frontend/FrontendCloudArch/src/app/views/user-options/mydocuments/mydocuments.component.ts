@@ -124,6 +124,8 @@ export class MydocumentsComponent implements OnInit{
         this.abrirCarpeta(carpeta);
       }else if(result.value=='delete'){
         this.eliminarCarpeta(carpeta);
+      }else if(result.value=='mover'){
+        this.moveDirectory(carpeta);
       }
     });
    }
@@ -136,6 +138,18 @@ export class MydocumentsComponent implements OnInit{
    }
   eliminarCarpeta(carpeta: Carpeta){
   alert('Eliminando carpeta: ' + carpeta.name);
+  //TODO: Eliminare la carpeta y todo lo que tenga adentro, y lo enviare a la papelera
+    Swal.fire({
+      title: '¿Está seguro de eliminar la carpeta?',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Confirmar',
+    }).then((result) => {
+      if(result.isConfirmed){
+        //TODO: eliminare la carpeta y lo que este dentro
+      }
+    })
   }
 
    regresar(){
@@ -186,10 +200,11 @@ export class MydocumentsComponent implements OnInit{
       title: 'Seleccione opcion a realizar',
       input: 'select',
       inputOptions: {
-        abrir: 'Abrir',
+        abrir: 'Editar',
         delete: 'Eliminar',
         compartir: 'Compartir',
         copiar: 'Hacer Copia',
+        mover: 'Mover',
         cancelar: 'Cancelar'
       }
       }).then((result) => {
@@ -201,6 +216,8 @@ export class MydocumentsComponent implements OnInit{
        this.compartirArchivo(archivo);
       }else if(result.value=='copiar') {
         this.hacerCopia(archivo.name);
+      }else if(result.value=='mover'){
+        this.moveFile(archivo);
       }
     })
   }
@@ -271,7 +288,13 @@ export class MydocumentsComponent implements OnInit{
         //verificare que exista el usuario al que se la va a compartir
         this.service.getByUsername(result.value)
           .subscribe((res: any) => {
-            if(res){
+            if(res.find=='not'){
+              Swal.fire(
+                'Error',
+                'No existe el usuario al que desea compartir',
+                'error'
+              )
+            }else{
               //hare lo de la fecha actual para mandar el string
               const today = new Date();
               const year = today.getFullYear();
@@ -299,12 +322,6 @@ export class MydocumentsComponent implements OnInit{
                     )
                   }
                 });
-            }else{
-              Swal.fire(
-                'Error',
-                'No existe el usuario al que desea compartir',
-                'error'
-              )
             }
           });
       }
@@ -364,6 +381,105 @@ export class MydocumentsComponent implements OnInit{
           }
         });
     }
+  }
+
+  getMoveFile(){
+    return this.service.move_archivo
+  }
+
+  moveFile(archivo:ArchivoSave){
+    this.service.move_archivo=true;
+    localStorage.setItem("archivo_mov", JSON.stringify(archivo));
+  }
+  moverArchivo(){
+    this.service.move_archivo=false;
+    let path_actual=JSON.parse(localStorage.getItem("path") || '{}')
+    let archivo_mover= JSON.parse(localStorage.getItem("archivo_mov") || '{}');
+    Swal.fire({
+      title: '¿Esta seguro de moverlo aqui?',
+      icon: 'question',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Confirmar',
+    }).then((result)=>{
+      if(result.dismiss){
+        Swal.fire(
+          'Cancelado',
+          'No se compartió el archivo',
+          'error'
+        )
+      }else{
+        this.service.updatePath(archivo_mover, path_actual)
+          .subscribe((res:any)=>{
+           if(res.update=='yes'){
+              Swal.fire(
+                'Movido',
+                'Se movió el archivo',
+                'success'
+              ).then((result) => {
+                this.buscarArchivos();
+                localStorage.removeItem("archivo_mov");
+              });
+           }else{
+              Swal.fire(
+                'Error',
+                'No se movió el archivo',
+                'error'
+              )
+             this.service.move_archivo=false;
+           }
+
+        });
+      }
+    })
+
+  }
+
+  getMoveDirectory(){
+    return this.service.move_carpeta
+  }
+  moverCarpeta(){
+    this.service.move_carpeta=false;
+    let path_actual=JSON.parse(localStorage.getItem("path") || '{}')
+    let carpeta_mover= JSON.parse(localStorage.getItem("carpeta_mov") || '{}');
+    Swal.fire({
+      title: '¿Esta seguro de moverlo aqui?',
+      icon: 'question',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Confirmar',
+    }).then((result)=>{
+      //TODO: aqui tengo que recorrer todo el directorio:
+      if(result.dismiss){
+        Swal.fire(
+          'Cancelado',
+          'No se compartió el archivo',
+          'error'
+        )
+      }else{
+        let path_antiguo = carpeta_mover.path+"/"+carpeta_mover.name;
+        let path_nuevo = JSON.parse( localStorage.getItem("path") || '{}');
+        this.service.updatePathDirectory(carpeta_mover)
+          .subscribe((res:any)=>{
+            if(res.move=='yes'){
+              Swal.fire(
+                'Movido',
+                'Se movió el archivo',
+                'success'
+              ).then((result) => {
+                this.buscarCarpetas();
+                this.buscarArchivos();
+                localStorage.removeItem("carpeta_mov");
+              });
+            }
+          });
+      }
+    });
+  }
+
+  moveDirectory(carpeta: Carpeta){
+    this.service.move_carpeta=true;
+    localStorage.setItem("carpeta_mov", JSON.stringify(carpeta));
   }
 
 }

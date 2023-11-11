@@ -58,10 +58,23 @@ const deleteFile = async (req, res) => {
     }
 }
 
+const updatePath = async (req, res) =>{
+    console.log(req.query)
+    console.log(req.body)
+    const update = await Archivo.updateOne({user: req.body.user, path: req.body.path, name: req.body.name},
+        {$set: {path: req.query.newpath}});
+    if(update){
+        res.json({update: 'yes'});
+    }else{
+        res.json({update: 'not'});
+    }
+}
+
 module.exports = {
     addArchivo,
     getAllArchivosUser,
     getOneFile,
     updateFile,
-    deleteFile
+    deleteFile,
+    updatePath
 };

@@ -22,6 +22,8 @@ export class UserService {
   name_doc: string='';
   editar: boolean=true;
   view_shared: boolean=false;
+  move_archivo: boolean=false;
+  move_carpeta: boolean=false;
   /*---------------------------------------------------------USUARIO---------------------------------------------------------*/
   public getByUsername(username: string){
     return this.httpClient.get<User>(this.URL_API+'/getByUsername/'+username);
@@ -41,6 +43,13 @@ export class UserService {
     return this.httpClient.post(this.URL_API+'/addDirectory', carpeta);
   }
 
+  updatePathDirectory(carpeta: CarpetaSave){
+    let username = JSON.parse(localStorage.getItem("user") || '{}').username;
+    let path = JSON.parse(localStorage.getItem("path") || '{}');
+    let new_path_directory = path+'/'+carpeta.name;
+    let carpeta_move= JSON.parse(localStorage.getItem("carpeta_mov") || '{}');
+    return this.httpClient.put(this.URL_API+'/updatePathDirectory?username='+username+'&pathn='+new_path_directory, carpeta);
+  }
   /*---------------------------------------------------------FILES---------------------------------------------------------*/
   public getFilesUser(){
     let username = JSON.parse(localStorage.getItem("user") || '{}').username;
@@ -64,6 +73,10 @@ export class UserService {
 
   public deleteFile(file: ArchivoSave){
     return this.httpClient.delete(this.URL_API+'/deleteFile?user='+file.user+'&path='+file.path+'&name='+file.name);
+  }
+
+  public updatePath(file: ArchivoSave, new_path:string){
+    return this.httpClient.put(this.URL_API+'/updatePath?newpath='+new_path, file);
   }
   /*---------------------------------------------------------SHARED---------------------------------------------------------*/
   public getSharedByUser(){

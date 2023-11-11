@@ -3,6 +3,8 @@
     <a *ngIf="regresar_boton" (click)="regresar()" class="bi bi-arrow-return-left btn" >Regresar</a>
     <a (click)="edit_new_file()" class="bi bi-file-earmark-plus btn">Nuevo Archivo</a>
     <a (click)="newDirectory()" class="bi bi-folder-plus btn">Nueva Carpeta</a>
+    <a *ngIf="getMoveFile()" (click)="moverArchivo()" class="bi bi-file-earmark-arrow-down-fill btn">Mover Aqui</a>
+    <a *ngIf="getMoveDirectory()" (click)="moverCarpeta()" class="bi bi-folder-check btn">Mover Aqui</a>
   </div>
   <div class="content">
     <h2 class="text-center">Directorios</h2>

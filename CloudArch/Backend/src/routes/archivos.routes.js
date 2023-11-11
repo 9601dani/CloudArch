@@ -7,5 +7,6 @@ router.get('/getAllFilesUser', ArchivoController.getAllArchivosUser);
 router.get('/getOneFile', ArchivoController.getOneFile);
 router.put('/updateFile', ArchivoController.updateFile);
 router.delete('/deleteFile', ArchivoController.deleteFile);
+router.put('/updatePath', ArchivoController.updatePath);
 
 module.exports = router;

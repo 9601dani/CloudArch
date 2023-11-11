@@ -6,6 +6,7 @@ const router1 = express.Router();
 
 router1.post('/addDirectory', CarpetaController.addCarpeta);
 router1.get('/getAllDirectoriesUser', CarpetaController.getAllCarpetasUser);
+router1.put('/updatePathDirectory', CarpetaController.moveCarpeta);
 
 
 

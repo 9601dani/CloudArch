@@ -73,6 +73,14 @@ export class EditorComponent implements OnInit{
         showCancelButton: true,
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Confirmar',
+        inputValidator: (value) => {
+          const regex = /^[a-zA-Z0-9 ]+$/;
+
+          if (!value || !regex.test(value)) {
+            return 'Digite un nombre válido, no pueden haber caracteres especiales';
+          }
+          return null;
+        }
       }).then((result) => {
         if(result.dismiss){
           Swal.fire(
