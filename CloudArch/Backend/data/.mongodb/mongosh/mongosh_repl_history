@@ -1,0 +1,12 @@
+db.archivos.find()
+use cloud-arch
+db.users.insertMany([ { "name": "Erick Morales", "username": "erick", "password": "123", "rol": 1 }, { "name": "Juan Perez", "username": "juan", "password": "123", "rol": 2 }, { "name": "Maria Lopez", "username": "maria", "password": "123", "rol": 2 }] );
+db.archivos.find()
+show collections
+use cloud-archck",
+        "name": "Erick Morales",
+    {
+db.users.insertMany([
+db.archivos.find()
+show collections
+use cloud-arch

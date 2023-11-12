@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const host = 'localhost';
+const host = 'db';
 const port = '27017';
 const database = 'cloud-arch';
 

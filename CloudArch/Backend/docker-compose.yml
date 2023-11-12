@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  db:
+    image: mongo:7.0.2
+    container_name: cloud-arch-mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./data:/data/db
+      - ./data/log:/var/log/mongodb
+
+  nodeapp:
+    build: .
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - 4000:4000
