@@ -1,5 +1,6 @@
 const Carpeta = require('../models/Carpeta');
 const Archivo = require('../models/Archivo');
+const Papelera = require('../models/Papelera');
 
 const addCarpeta =async (req, res) => {
     const insertCarpeta = new Carpeta(
@@ -61,6 +62,8 @@ const moveAllCarpetasUser = async (username, name, oldPath, newPath) => {
     });
 
 };
+
+
 
 
 const copyCarpeta = async (req, res) => {
@@ -126,5 +129,4 @@ module.exports = {
     moveAllCarpetasUser,
     copyCarpeta,
     copyAllCarpetasUser
-
 };

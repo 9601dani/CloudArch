@@ -96,7 +96,7 @@ export class EditorComponent implements OnInit{
             input: 'select',
             inputOptions: {
               html: 'Html',
-              text: 'Texto',
+              txt: 'Texto',
             }
           }).then((result2) => {
             this.service.getOneFile(result.value+'.'+result2.value)
