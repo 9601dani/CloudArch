@@ -119,7 +119,6 @@ export class MydocumentsComponent implements OnInit{
         abrir: 'Abrir',
         mover: 'Mover',
         copiar: 'Hacer Copia',
-        delete: 'Eliminar',
       }
     }).then((result) => {
       if(result.value=='abrir'){

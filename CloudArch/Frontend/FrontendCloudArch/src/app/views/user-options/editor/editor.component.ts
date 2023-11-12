@@ -74,7 +74,7 @@ export class EditorComponent implements OnInit{
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Confirmar',
         inputValidator: (value) => {
-          const regex = /^[a-zA-Z0-9 .-]+$/;
+          const regex = /^[a-zA-Z0-9 _.-]+$/;
 
           if (!value || !regex.test(value)) {
             return 'Digite un nombre válido, no pueden haber caracteres especiales';
